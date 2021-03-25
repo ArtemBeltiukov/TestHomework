@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigInteger;
 import java.util.concurrent.TimeUnit;
@@ -10,10 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UtilsTest {
     Utils utils = new Utils();
     int randomNum = 4;
-    @Test
-    void concatenateWordsNonLatin() {
-        String actual = utils.concatenateWords("Проверка","не латиницы");
-        assertEquals("Проверка не латиницы",actual);
+    @ParameterizedTest
+    @ValueSource(strings = {"Проверка кириллицы", "ツ улыбка", "\uD83C\uDF08 \uD83E\uDD84"})
+    void concatenateWordsNonLatin(String value) {
+        String[] words = value.split(" ");
+        assertEquals(value,utils.concatenateWords(words[0],words[1]));
     }
 
     @Test
@@ -36,7 +39,7 @@ public class UtilsTest {
 
     @Test
     void testComputeFactorial() {
-        assertEquals(BigInteger.valueOf(24),utils.computeFactorial(randomNum));
+        assertEquals(BigInteger.valueOf(24),utils.computeFactorial(4));
     }
 
     @Test
